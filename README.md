@@ -13,9 +13,11 @@ There are 2 problems:
 
 You can, of cours, manually create LB, but you need to detect if nodes are down and respawned with new IP. And if you've got auto-scaling for nodes, so you need to change yourself the LB configuration.
 
-This project proposes to create one service with type "LoadBalancer" - it binds ports 80 and 443 (for now) to a nginx pod that is configured with "stream" TCP forward.
+This project proposes to create one service with type "LoadBalancer" - it binds ports 80 and 443 (for now) to a Nginx container that is configured to make TCP forward (instead of http forward).
 
-A sidecar container checks ingress-controllers IPs and make the configuration changes in nginx container. This way, every connection on the LB is redirected to nginx wich forward everything to ingress-controller.
+A sidecar container checks ingress-controllers IPs and make the configuration changes in nginx container (by creating upstreams). 
+
+This way, **every connections on the LB is redirected to nginx which forwards everything to ingress-controller IP**.
 
 ## Installation
 
