@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lb-proxy-controller.fullname" . }}
+  labels:
+    {{- include "lb-proxy-controller.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.tlsPort }}
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    {{- include "lb-proxy-controller.selectorLabels" . | nindent 4 }}
